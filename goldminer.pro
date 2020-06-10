@@ -1,8 +1,11 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+TARGET = goldminer
+TEMPLATE = app
+
+CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -27,6 +30,8 @@ FORMS += \
 
 TRANSLATIONS += \
     goldminer_ru.ts
+
+CODECFORSRC     = UTF-8
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

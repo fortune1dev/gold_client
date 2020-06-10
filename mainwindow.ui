@@ -6,16 +6,157 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>580</width>
+    <height>111</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="labelMineStatus">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>561</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Miner stoped</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>561</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Enter your e-mail here: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditEmail"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_startMiningButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>190</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Start mining</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>580</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuGold_mining_for_games">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="m_actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+    <addaction name="m_actionAbout_this"/>
+    <addaction name="m_actionAbout_Fortune1Coin"/>
+   </widget>
+   <widget class="QMenu" name="menuGo_to_the_site">
+    <property name="title">
+     <string>Community</string>
+    </property>
+    <addaction name="m_actionTelegram"/>
+    <addaction name="m_actionTwitter"/>
+    <addaction name="m_actionVK"/>
+   </widget>
+   <addaction name="menuGold_mining_for_games"/>
+   <addaction name="menuGo_to_the_site"/>
+   <addaction name="menuAbout"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="m_actionExit">
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="m_actionTwitter">
+   <property name="text">
+    <string>T&amp;witter</string>
+   </property>
+  </action>
+  <action name="m_actionTelegram">
+   <property name="text">
+    <string>&amp;Telegram</string>
+   </property>
+  </action>
+  <action name="m_actionVK">
+   <property name="text">
+    <string>&amp;VK</string>
+   </property>
+  </action>
+  <action name="m_actionAbout_this">
+   <property name="text">
+    <string>About this application</string>
+   </property>
+  </action>
+  <action name="m_actionAbout_Fortune1Coin">
+   <property name="text">
+    <string>About Fortune1Coin</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
