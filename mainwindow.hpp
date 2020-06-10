@@ -21,6 +21,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_radioAMD_clicked();
+    void on_radioNVIDIA_clicked();
+    void startMiningClicked(bool _on);
+    void communityTwitterTriggered();
+    void communityVKTriggered();
+    void communityTelegramTriggered();
+    void aboutThisTriggered();
+    void aboutFT1Triggered();
+
 private:
     const QString COMMUNITY_VK_URL = "https://vk.com/gold_mining";
     const QString COMMUNITY_TELEGRAM_URL = "https://t.me/ft1_goldmining";
@@ -29,6 +39,7 @@ private:
     const QString ABOUT_THIS_URL = "https://gold.fortune1.money/";
     const QString ABOUT_FT1_URL = "https://fortune1.money/";
 
+    QString gpu = "";
 
     Ui::MainWindow *ui;
     QProcess* m_miner_procces;
@@ -37,11 +48,7 @@ private:
     void startMining();
     void stopMining();
 
-    Q_SLOT void startMiningClicked(bool _on);
-    Q_SLOT void communityTwitterTriggered();
-    Q_SLOT void communityVKTriggered();
-    Q_SLOT void communityTelegramTriggered();
-    Q_SLOT void aboutThisTriggered();
-    Q_SLOT void aboutFT1Triggered();
+
+
 };
 #endif // MAINWINDOW_HPP

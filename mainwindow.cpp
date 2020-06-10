@@ -24,6 +24,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->m_actionExit, &QAction::triggered, qApp, &QApplication::quit);
     connect(ui->m_actionAbout_this, SIGNAL(triggered()), this, SLOT(aboutThisTriggered()));
     connect(ui->m_actionAbout_Fortune1Coin, SIGNAL(triggered()), this, SLOT(aboutFT1Triggered()));
+    connect(m_miner_procces, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+        [=](int exitCode, QProcess::ExitStatus exitStatus){
+            int e = exitCode;
+            QProcess::ExitStatus es = exitStatus;
+            qDebug() << e << es;
+            ui->m_startMiningButton->setChecked(false);
+            ui->m_startMiningButton->setText(tr("Start mining"));
+            ui->labelMineStatus->setStyleSheet("color: rgb(200, 0, 0)");
+            ui->labelMineStatus->setText(tr("Miner stoped"));
+        });
 }
 
 MainWindow::~MainWindow()
@@ -58,13 +68,16 @@ void MainWindow::aboutThisTriggered()
 
 void MainWindow::startMining() {
     QString email = ui->lineEditEmail->text();
+    if(gpu == "" || email ==  "")
+        return;
+
     QByteArray ba = email.toUtf8();
     m_settings->setValue("miner/email_address", email);
 //    qDebug() << email;
 //    qDebug() <<  QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex();
 
     QString params;
-    QString program = QCoreApplication::applicationDirPath() + "/miner.exe";
+    QString program = QCoreApplication::applicationDirPath() + "/miner-" + gpu + ".exe";
     QStringList arguments = QStringList()
             << "--cuda"
             << "--pool"
@@ -109,4 +122,16 @@ void MainWindow::startMiningClicked(bool _on) {
   } else {
     stopMining();
   }
+}
+
+void MainWindow::on_radioAMD_clicked()
+{
+    gpu = "amd";
+    ui->m_startMiningButton->setEnabled(true);
+}
+
+void MainWindow::on_radioNVIDIA_clicked()
+{
+    gpu = "nvidia";
+    ui->m_startMiningButton->setEnabled(true);
 }
