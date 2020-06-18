@@ -77,9 +77,8 @@ void MainWindow::startMining() {
 //    qDebug() <<  QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex();
 
     QString params;
-    QString program = QCoreApplication::applicationDirPath() + "/miner-" + gpu + ".exe";
+    QString program = QCoreApplication::applicationDirPath() + "/" + gpu;
     QStringList arguments = QStringList()
-            << "--cuda"
             << "--pool"
             << "stratum1+tcp://ZxDkkTsVsX3MvBYGMdqT3fJimqa2cexc83VKz644HcvVbQfdBRkgr69BzVhTzRwdxQe7DRm8DESbibewKYWrhvCX2wNxo8TAE."
                + QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex()
