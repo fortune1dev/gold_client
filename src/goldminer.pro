@@ -31,6 +31,9 @@ FORMS += \
 TRANSLATIONS += \
     goldminer_ru.ts
 
+Release:DESTDIR = $$PWD/../bin
+Debug:DESTDIR = $$PWD/../bin_debug
+
 CODECFORSRC     = UTF-8
 
 # Default rules for deployment.
