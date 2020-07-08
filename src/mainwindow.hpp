@@ -20,6 +20,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    bool debug_mode = false;
 
 private slots:
     void on_radioAMD_clicked();
@@ -47,8 +48,5 @@ private:
 
     void startMining();
     void stopMining();
-
-
-
 };
 #endif // MAINWINDOW_HPP

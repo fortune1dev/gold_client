@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_miner_procces(new QProcess(this))
 {
     ui->setupUi(this);
-    this->setWindowTitle(tr("Gold miner of Fortune1Coin"));
+    //this->setWindowTitle(tr("Gold miner of Fortune1Coin"));
     ui->labelMineStatus->setStyleSheet("color: rgb(200, 0, 0)");
 
     m_settings.reset(new QSettings(tr("Fortune1Coin"), tr("Gold miner")));
@@ -86,10 +86,13 @@ void MainWindow::startMining() {
 
 //    qDebug() << program;
 //    qDebug() << arguments;
-//    m_miner_procces->setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments *args){
-//        args->flags |= CREATE_NEW_CONSOLE;
-//        args->startupInfo->dwFlags &= ~STARTF_USESTDHANDLES;
-//    });
+    if (debug_mode){
+        m_miner_procces->setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments *args){
+            args->flags |= CREATE_NEW_CONSOLE;
+            args->startupInfo->dwFlags &= ~STARTF_USESTDHANDLES;
+        });
+    }
+
     m_miner_procces->start(program, arguments);
     if (!m_miner_procces->waitForStarted()){
         qDebug() << m_miner_procces->error();
