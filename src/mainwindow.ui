@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>423</width>
-    <height>218</height>
+    <width>538</width>
+    <height>319</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Gold miner of Fortune1Coin</string>
+   <string>GoldMiner from Fortune1Coin team (v 0.4)</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="labelMineStatus">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>140</y>
-      <width>401</width>
+      <y>250</y>
+      <width>521</width>
       <height>16</height>
      </rect>
     </property>
@@ -38,17 +38,17 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="m_groupGPUSelect">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
-      <width>281</width>
-      <height>81</height>
+      <y>170</y>
+      <width>301</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="title">
-     <string>Select your GPU:</string>
+     <string>Select your GPU type:</string>
     </property>
     <widget class="QRadioButton" name="radioAMD">
      <property name="geometry">
@@ -59,6 +59,9 @@
        <height>19</height>
       </rect>
      </property>
+     <property name="statusTip">
+      <string/>
+     </property>
      <property name="text">
       <string>AMD Radeon</string>
      </property>
@@ -66,11 +69,14 @@
     <widget class="QRadioButton" name="radioNVIDIA">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>170</x>
        <y>30</y>
        <width>111</width>
        <height>19</height>
       </rect>
+     </property>
+     <property name="statusTip">
+      <string/>
      </property>
      <property name="text">
       <string>nVIDIA GeForce</string>
@@ -80,11 +86,17 @@
    <widget class="QLineEdit" name="lineEditEmail">
     <property name="geometry">
      <rect>
-      <x>131</x>
-      <y>11</y>
-      <width>281</width>
+      <x>160</x>
+      <y>8</y>
+      <width>261</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="statusTip">
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="m_startMiningButton">
@@ -93,9 +105,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>80</y>
-      <width>100</width>
+      <x>350</x>
+      <y>200</y>
+      <width>181</width>
       <height>21</height>
      </rect>
     </property>
@@ -128,14 +140,69 @@
     <property name="geometry">
      <rect>
       <x>11</x>
-      <y>11</y>
-      <width>114</width>
+      <y>10</y>
+      <width>151</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Enter your e-mail here: </string>
+     <string>Enter your e-mail here:</string>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="m_groupPerfomanceProfile">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>521</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please pay attention to selecting the performance profile! Your income depends on it! &lt;span style=&quot; font-weight:600;&quot;&gt;The more accurate you specify a performance profile, the better your mining result is.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="title">
+     <string>Select your performance profile:</string>
+    </property>
+    <widget class="QRadioButton" name="m_radioLowProfile">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>501</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Old GPUs and midle notebooks</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="m_radioMidleProfile">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>501</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>GPU  like AMD RX 460, 550, 560, NVIDIA 1050, 1060 series and power laptops</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="m_radioHighProfile">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>501</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>GPU like AMD RX 470, 480, 570, 580, VEGA 56/64. NVIDIA 1070, 1080, 1600 and more powerful</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -143,7 +210,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>423</width>
+     <width>538</width>
      <height>20</height>
     </rect>
    </property>
@@ -165,8 +232,10 @@
      <string>Community</string>
     </property>
     <addaction name="m_actionTelegram"/>
-    <addaction name="m_actionTwitter"/>
+    <addaction name="m_actionFacebook"/>
     <addaction name="m_actionVK"/>
+    <addaction name="m_actionTwitter"/>
+    <addaction name="m_actionReddit"/>
    </widget>
    <addaction name="menuGold_mining_for_games"/>
    <addaction name="menuGo_to_the_site"/>
@@ -206,24 +275,17 @@
     <string>About Fortune1Coin</string>
    </property>
   </action>
+  <action name="m_actionReddit">
+   <property name="text">
+    <string>&amp;Reddit</string>
+   </property>
+  </action>
+  <action name="m_actionFacebook">
+   <property name="text">
+    <string>&amp;Facebook</string>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>groupBox</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>lower()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>150</x>
-     <y>100</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>211</x>
-     <y>108</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
