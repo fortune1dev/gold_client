@@ -6,83 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>538</width>
-    <height>319</height>
+    <width>598</width>
+    <height>401</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>GoldMiner from Fortune1Coin team (v 0.4)</string>
+   <string>Easy mining for &quot;Dummies&quot; from Fortune1Coin team (v 2.0)</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="labelMineStatus">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>250</y>
-      <width>521</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string>Miner stoped</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="m_groupGPUSelect">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>170</y>
-      <width>301</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Select your GPU type:</string>
-    </property>
-    <widget class="QRadioButton" name="radioAMD">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>84</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="statusTip">
-      <string/>
-     </property>
-     <property name="text">
-      <string>AMD Radeon</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioNVIDIA">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>30</y>
-       <width>111</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="statusTip">
-      <string/>
-     </property>
-     <property name="text">
-      <string>nVIDIA GeForce</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QLineEdit" name="lineEditEmail">
     <property name="geometry">
      <rect>
@@ -99,43 +30,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="m_startMiningButton">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>200</y>
-      <width>181</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>100</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>190</width>
-      <height>16777215</height>
-     </size>
-    </property>
-    <property name="text">
-     <string>Start mining</string>
-    </property>
-    <property name="checkable">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
@@ -149,59 +43,360 @@
      <string>Enter your e-mail here:</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="m_groupPerfomanceProfile">
+   <widget class="QTabWidget" name="m_tabWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>50</y>
-      <width>521</width>
-      <height>111</height>
+      <y>40</y>
+      <width>580</width>
+      <height>301</height>
      </rect>
     </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please pay attention to selecting the performance profile! Your income depends on it! &lt;span style=&quot; font-weight:600;&quot;&gt;The more accurate you specify a performance profile, the better your mining result is.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <property name="currentIndex">
+     <number>1</number>
     </property>
-    <property name="title">
-     <string>Select your performance profile:</string>
-    </property>
-    <widget class="QRadioButton" name="m_radioLowProfile">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>501</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Old GPUs and midle notebooks</string>
-     </property>
+    <widget class="QWidget" name="m_tab_GPU">
+     <attribute name="title">
+      <string>GPU settings</string>
+     </attribute>
+     <widget class="QCheckBox" name="m_check_GPU_mining">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>261</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enable GPU mining</string>
+      </property>
+      <property name="tristate">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QFrame" name="m_frame_GPU_settings">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>30</y>
+        <width>576</width>
+        <height>241</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QGroupBox" name="m_groupPerfomanceProfile">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>559</width>
+         <height>110</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please pay attention to selecting the performance profile! Your income depends on it! &lt;span style=&quot; font-weight:600;&quot;&gt;The more accurate you specify a performance profile, the better your mining result is.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="title">
+        <string>Select your performance profile:</string>
+       </property>
+       <widget class="QRadioButton" name="m_radioLowProfile">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>501</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Old GPUs and midle notebooks</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="m_radioMidleProfile">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>501</width>
+          <height>19</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>GPU  like AMD RX 460, 550, 560, NVIDIA 1050, 1060 series and power laptops</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="m_radioHighProfile">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>501</width>
+          <height>19</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>GPU like AMD RX 470, 480, 570, 580, VEGA 56/64. NVIDIA 1070, 1080, 1600 and more powerful</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="m_groupGPUSelect">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>131</y>
+         <width>559</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Select your GPU type:</string>
+       </property>
+       <widget class="QRadioButton" name="radioAMD">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>20</y>
+          <width>87</width>
+          <height>19</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string>AMD Radeon</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioNVIDIA">
+        <property name="geometry">
+         <rect>
+          <x>13</x>
+          <y>20</y>
+          <width>102</width>
+          <height>19</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string>nVIDIA GeForce</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QPushButton" name="m_startGPUMiningButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>190</y>
+         <width>181</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>190</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Start mining</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="m_labelGPUMinerStatus">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>220</y>
+         <width>561</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Miner stoped</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
     </widget>
-    <widget class="QRadioButton" name="m_radioMidleProfile">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>501</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>GPU  like AMD RX 460, 550, 560, NVIDIA 1050, 1060 series and power laptops</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="m_radioHighProfile">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>501</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>GPU like AMD RX 470, 480, 570, 580, VEGA 56/64. NVIDIA 1070, 1080, 1600 and more powerful</string>
-     </property>
+    <widget class="QWidget" name="m_tab_CPU">
+     <attribute name="title">
+      <string>CPU settings</string>
+     </attribute>
+     <widget class="QCheckBox" name="m_check_CPU_mining">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>261</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enable CPU mining</string>
+      </property>
+     </widget>
+     <widget class="QFrame" name="m_frame_CPU_settings">
+      <property name="geometry">
+       <rect>
+        <x>-1</x>
+        <y>29</y>
+        <width>581</width>
+        <height>241</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="m_label_cpu_cores_count">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>10</y>
+         <width>460</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>In the drop-down list on the left, select the number of cores of your processor that you want to use for mining.</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::PlainText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="indent">
+        <number>0</number>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="m_CPUCoresCombo">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>91</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="m_labelCPUMinerStatus">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>561</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Miner stoped</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="m_startCPUMiningButton">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>90</y>
+         <width>181</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>190</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Start mining</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -210,7 +405,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>538</width>
+     <width>598</width>
      <height>20</height>
     </rect>
    </property>
