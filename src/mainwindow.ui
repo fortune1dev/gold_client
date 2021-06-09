@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Till Koch</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
@@ -7,11 +8,11 @@
     <x>0</x>
     <y>0</y>
     <width>598</width>
-    <height>401</height>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Easy mining for &quot;Dummies&quot; from Fortune1Coin team (v 2.0)</string>
+   <string>Easy mining for &quot;Dummies&quot; from Fortune1Coin team (v 2.2)</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLineEdit" name="lineEditEmail">
@@ -49,11 +50,11 @@
       <x>10</x>
       <y>40</y>
       <width>580</width>
-      <height>301</height>
+      <height>231</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="m_tab_GPU">
      <attribute name="title">
@@ -84,7 +85,7 @@
         <x>0</x>
         <y>30</y>
         <width>576</width>
-        <height>241</height>
+        <height>171</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -93,7 +94,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QGroupBox" name="m_groupPerfomanceProfile">
+      <widget class="QGroupBox" name="m_groupGPUSelect">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -102,65 +103,7 @@
          <x>10</x>
          <y>10</y>
          <width>559</width>
-         <height>110</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please pay attention to selecting the performance profile! Your income depends on it! &lt;span style=&quot; font-weight:600;&quot;&gt;The more accurate you specify a performance profile, the better your mining result is.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="title">
-        <string>Select your performance profile:</string>
-       </property>
-       <widget class="QRadioButton" name="m_radioLowProfile">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>501</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Old GPUs and midle notebooks</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="m_radioMidleProfile">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>501</width>
-          <height>19</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>GPU  like AMD RX 460, 550, 560, NVIDIA 1050, 1060 series and power laptops</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="m_radioHighProfile">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>501</width>
-          <height>19</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>GPU like AMD RX 470, 480, 570, 580, VEGA 56/64. NVIDIA 1070, 1080, 1600 and more powerful</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="m_groupGPUSelect">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>131</y>
-         <width>559</width>
-         <height>51</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="title">
@@ -169,9 +112,9 @@
        <widget class="QRadioButton" name="radioAMD">
         <property name="geometry">
          <rect>
-          <x>130</x>
+          <x>140</x>
           <y>20</y>
-          <width>87</width>
+          <width>91</width>
           <height>19</height>
          </rect>
         </property>
@@ -187,7 +130,7 @@
          <rect>
           <x>13</x>
           <y>20</y>
-          <width>102</width>
+          <width>111</width>
           <height>19</height>
          </rect>
         </property>
@@ -206,7 +149,7 @@
        <property name="geometry">
         <rect>
          <x>200</x>
-         <y>190</y>
+         <y>60</y>
          <width>181</width>
          <height>21</height>
         </rect>
@@ -240,14 +183,14 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>220</y>
+         <y>80</y>
          <width>561</width>
          <height>20</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>10</pointsize>
+         <pointsize>8</pointsize>
         </font>
        </property>
        <property name="autoFillBackground">
@@ -258,6 +201,41 @@
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="m_labelGPUMinerStatistics">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>561</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(59, 59, 59);</string>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
        </property>
       </widget>
      </widget>
@@ -339,14 +317,14 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>120</y>
+         <y>80</y>
          <width>561</width>
          <height>20</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>10</pointsize>
+         <pointsize>8</pointsize>
         </font>
        </property>
        <property name="autoFillBackground">
@@ -366,7 +344,7 @@
        <property name="geometry">
         <rect>
          <x>200</x>
-         <y>90</y>
+         <y>50</y>
          <width>181</width>
          <height>21</height>
         </rect>
@@ -394,6 +372,41 @@
        </property>
        <property name="checkable">
         <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="m_labelCPUMinerStatistics">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>561</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>The hashrate is reset to 0 every time the miner gets a new job from the pool.</string>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(59, 59, 59);</string>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
        </property>
       </widget>
      </widget>
@@ -483,4 +496,21 @@
  </widget>
  <resources/>
  <connections/>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>10</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>10</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
 </ui>

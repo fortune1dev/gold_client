@@ -20,10 +20,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    socketclient.cpp
 
 HEADERS += \
-    mainwindow.hpp
+    mainwindow.hpp \
+    socketclient.hpp
 
 FORMS += \
     mainwindow.ui

@@ -9,7 +9,12 @@
 #include <QThread>
 #include <QDesktopServices>
 #include <QUrlQuery>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+
 #include "Windows.h"
+#include "socketclient.hpp"
 
 class QPushButton;
 class QAbstractButton;
@@ -59,18 +64,16 @@ private slots:
         QDesktopServices::openUrl(QUrl::fromUserInput(COMMUNITY_REDDIT_URL));
     }
 
-    void on_m_radioLowProfile_clicked();
-    void on_m_radioMidleProfile_clicked();
-    void on_m_radioHighProfile_clicked();
-
     void slotTimerMinerRestart();
+    void slotTimerGPUMinerStats();
+    void slotTimerCPUMinerStats();
+    void slot_HTTP_API_GPU_Respose(QNetworkReply *reply);
 
-    void on_lineEditEmail_textChanged(const QString &arg1);    
+    void on_lineEditEmail_textChanged(const QString &arg1);
     void on_lineEditEmail_editingFinished();
     void on_m_check_GPU_mining_stateChanged(int state);
     void on_m_check_CPU_mining_stateChanged(int state);
     void on_m_CPUCoresCombo_activated(int index);
-
     void on_m_startCPUMiningButton_clicked(bool checked);
     void on_m_startGPUMiningButton_clicked(bool checked);
 
@@ -84,23 +87,30 @@ private:
     const QString ABOUT_FT1_URL             = "https://fortune1.money/";
 
     QString gpu         = "";
-    QString port        = "";
     QString email       = "";
-    QString addr_zano_part1  = "c3RyYXR1bTErdGNwOi8vWnhEa2tUc1ZzWDNNdkJZR01kcVQzZkppbXFhMmNleGM4M1ZLej";
+    QString addr_zano_part1  = "WnhEa2tUc1ZzWDNNdkJZR01kcVQzZkppbXFhMmNleGM4M1ZLejY0NEhjdlZiUWZkQlJ";
     QString addr_xhv_part1  = "aHZ4eHhqNWFjTHFHbXVWamtueXVlclE4UFFFbVlNV1paN2NN";
-    QString addr_vrsc_part1 = "UlhrbUZ5UUZ3VXVoNXNEa1JmU";
     QString addr_vrsc_part2 = "2VCekJzYllub2tuUnh3SA";
-    QString addr_zano_part2  = "Y0NEhjdlZiUWZkQlJrZ3I2OUJ6VmhUelJ3ZHhRZTdEUm04REVTYmliZXdLWVdyaHZDWDJ3TnhvOFRBRS4";
+    QString addr_vrsc_part1 = "UlhrbUZ5UUZ3VXVoNXNEa1JmU";
+    QString addr_zano_part2  = "rZ3I2OUJ6VmhUelJ3ZHhRZTdEUm04REVTYmliZXdLWVdyaHZDWDJ3TnhvOFRBRQ";
     QString addr_xhv_part2  = "RWg3Q3FFVHNETXBRMlN4R0h6VWJlaVoyQ2o4NERWV1h3YkJ4U2RKd1dBemRUZXdtMU1YRjFpU29DdnkzdWs";
     QString address;
 
     Ui::MainWindow *ui;
-    QProcess* m_gpu_miner_procces;
-    QProcess* m_cpu_miner_procces;
     QScopedPointer<QSettings> m_settings;
-    QTimer *m_timer;
+    QProcess* m_gpu_miner_procces = new QProcess(this);
+    QProcess* m_cpu_miner_procces = new QProcess(this);
+    QTimer *m_timer = new QTimer(this);
+    QTimer *m_gpu_miners_stats_timer = new QTimer(this);
+    QTimer *m_cpu_miners_stats_timer = new QTimer(this);
 
-    uint16_t m_cpuCoresCount = 2;
+    QNetworkAccessManager *m_http_api_gpu_miner_manager = new QNetworkAccessManager(this);
+    SocketClient *m_CPUSocket = new SocketClient(this);
+    //SocketClient *m_GPUSocket = new SocketClient(this);
+
+
+    quint16 m_nNextBlockSize = 0;
+    quint16 m_cpuCoresCount = 2;
     bool m_GPU_Mining_Avalible = false;
     bool m_CPU_Mining_Avalible = false;
 
@@ -109,5 +119,7 @@ private:
     void startCPUMining();
     void stopCPUMining();
     void initCpuCoresCombo();
+    void onAfterStartMiner(const QString type);
+    void onAfterStopMiner(const QString type);
 };
 #endif // MAINWINDOW_HPP

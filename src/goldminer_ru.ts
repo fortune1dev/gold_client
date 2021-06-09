@@ -4,201 +4,250 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.ui" line="14"/>
-        <source>Mining for &quot;Dummies&quot; from Fortune1Coin team (v 2.0)</source>
-        <oldsource>GoldMiner from Fortune1Coin team (v 2.0)</oldsource>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="257"/>
-        <location filename="mainwindow.ui" line="356"/>
-        <location filename="mainwindow.cpp" line="44"/>
-        <location filename="mainwindow.cpp" line="54"/>
-        <location filename="mainwindow.cpp" line="142"/>
-        <location filename="mainwindow.cpp" line="207"/>
+        <location filename="mainwindow.ui" line="200"/>
+        <location filename="mainwindow.ui" line="334"/>
+        <location filename="mainwindow.cpp" line="264"/>
+        <location filename="mainwindow.cpp" line="272"/>
         <source>Miner stoped</source>
         <translation>Майнер остановлен</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="167"/>
+        <location filename="mainwindow.ui" line="110"/>
         <source>Select your GPU type:</source>
         <oldsource>Select your GPU:</oldsource>
         <translation>Выберите тип вашей видеокарты:</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="17"/>
+        <location filename="mainwindow.cpp" line="16"/>
         <source>AMD Radeon series GPUs.</source>
         <oldsource>AMD Radeon series GPUs</oldsource>
         <translation>Серия графических процессоров AMD Radeon.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="182"/>
+        <location filename="mainwindow.ui" line="125"/>
         <source>AMD Radeon</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="18"/>
+        <location filename="mainwindow.cpp" line="17"/>
         <source>nVIDIA GeForce series GPUs.</source>
         <oldsource>nVIDIA GeForce series GPUs</oldsource>
         <translation>Серия графических процессоров nVIDIA GeForce.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="198"/>
+        <location filename="mainwindow.ui" line="141"/>
         <source>nVIDIA GeForce</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="mainwindow.cpp" line="18"/>
         <location filename="mainwindow.cpp" line="19"/>
-        <location filename="mainwindow.cpp" line="20"/>
         <source>Your e-mail must be the same as the one you used to register on the site.</source>
         <translation>Ваш e-mail должен совпадать с тем, который вы использовали для регистрации на сайте.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="233"/>
-        <location filename="mainwindow.ui" line="393"/>
-        <location filename="mainwindow.cpp" line="42"/>
-        <location filename="mainwindow.cpp" line="52"/>
-        <location filename="mainwindow.cpp" line="140"/>
-        <location filename="mainwindow.cpp" line="205"/>
+        <location filename="mainwindow.ui" line="176"/>
+        <location filename="mainwindow.ui" line="371"/>
+        <location filename="mainwindow.cpp" line="262"/>
+        <location filename="mainwindow.cpp" line="270"/>
         <source>Start mining</source>
         <translation>Начать майнинг</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="43"/>
+        <location filename="mainwindow.ui" line="44"/>
         <source>Enter your e-mail here:</source>
         <oldsource>Enter your e-mail here: </oldsource>
         <translation>Введите здесь ваш e-mail:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="60"/>
+        <location filename="mainwindow.ui" line="15"/>
+        <source>Easy mining for &quot;Dummies&quot; from Fortune1Coin team (v 2.2)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="61"/>
         <source>GPU settings</source>
         <translation>Настойки GPU</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="72"/>
+        <location filename="mainwindow.ui" line="73"/>
         <source>Enable GPU mining</source>
         <translation>Активировать майнинг на видеокарте</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="109"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please pay attention to selecting the performance profile! Your income depends on it! &lt;span style=&quot; font-weight:600;&quot;&gt;The more accurate you specify a performance profile, the better your mining result is.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пожалуйста, внимательно отнеситесь к выбору профиля производительности! От этого зависит ваш доход! &lt;span style=&quot; font-weight:600;&quot;&gt;Чем точнее вы указали профиль производительности, тем лучше ваш результат майнинга.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="mainwindow.ui" line="232"/>
+        <location filename="mainwindow.ui" line="403"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="112"/>
-        <source>Select your performance profile:</source>
-        <oldsource>Select your perfomance profile:</oldsource>
-        <translation>Выберите профиль производительности:</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="124"/>
-        <source>Old GPUs and midle notebooks</source>
-        <translation>Старые видеокарты и ноутбуки средней производительности</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="137"/>
-        <source>GPU  like AMD RX 460, 550, 560, NVIDIA 1050, 1060 series and power laptops</source>
-        <oldsource> GPU  like AMD RX 460, 550, 560, NVIDIA 1050, 1060 series and power notebooks</oldsource>
-        <translation>Видеокарты серий AMD RX 460, 550, 560, NVIDIA 1050, 1060 и мощные ноутбуки</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="150"/>
-        <source>GPU like AMD RX 470, 480, 570, 580, VEGA 56/64. NVIDIA 1070, 1080, 1600 and more powerful</source>
-        <oldsource> GPU like AMD RX 470, 480, 570, 580, VEGA 56/64. NVIDIA 1070, 1080, 1600, 2000 series</oldsource>
-        <translation>Видеокарты серий AMD RX 470, 480, 570, 580, VEGA 56/64. NVIDIA 1070, 1080 и более мощные</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="267"/>
+        <location filename="mainwindow.ui" line="245"/>
         <source>CPU settings</source>
         <translation>Настройки процессора</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="279"/>
+        <location filename="mainwindow.ui" line="257"/>
         <source>Enable CPU mining</source>
         <translation>Активировать майнинг на процессоре</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="313"/>
+        <location filename="mainwindow.ui" line="291"/>
         <source>In the drop-down list on the left, select the number of cores of your processor that you want to use for mining.</source>
         <translation>В раскрывающемся списке слева выберите количество ядер вашего процессора, которые вы хотите использовать для майнинга.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="414"/>
+        <location filename="mainwindow.ui" line="394"/>
+        <source>The hashrate is reset to 0 every time the miner gets a new job from the pool.</source>
+        <translation>Хешрейт сбрасывается на 0 каждый раз, когда майнер получает новое задание от пула.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="427"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="420"/>
+        <location filename="mainwindow.ui" line="433"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="427"/>
+        <location filename="mainwindow.ui" line="440"/>
         <source>Community</source>
         <translation>Сообщества</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="442"/>
+        <location filename="mainwindow.ui" line="455"/>
         <source>E&amp;xit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="445"/>
+        <location filename="mainwindow.ui" line="458"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="450"/>
+        <location filename="mainwindow.ui" line="463"/>
         <source>T&amp;witter</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="455"/>
+        <location filename="mainwindow.ui" line="468"/>
         <source>&amp;Telegram</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="460"/>
+        <location filename="mainwindow.ui" line="473"/>
         <source>&amp;VK</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="465"/>
+        <location filename="mainwindow.ui" line="478"/>
         <source>About GOLD Mining</source>
         <translation>О GOLD Mining</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="470"/>
+        <location filename="mainwindow.ui" line="483"/>
         <source>About Fortune1Coin</source>
         <translation>О Fortune1Coin</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="475"/>
+        <location filename="mainwindow.ui" line="488"/>
         <source>&amp;Reddit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="480"/>
+        <location filename="mainwindow.ui" line="493"/>
         <source>&amp;Facebook</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="21"/>
-        <source>Please pay attention to selecting the performance profile! Your income depends on it! The more accurate you specify a performance profile, the better your mining result is.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="125"/>
-        <location filename="mainwindow.cpp" line="190"/>
+        <location filename="mainwindow.cpp" line="236"/>
+        <location filename="mainwindow.cpp" line="244"/>
         <source>Stop mining</source>
         <translation>Остановить майнинг</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="127"/>
-        <location filename="mainwindow.cpp" line="192"/>
+        <location filename="mainwindow.cpp" line="238"/>
+        <location filename="mainwindow.cpp" line="246"/>
         <source>The miner is working... Check your statistics on the website every day.</source>
-        <oldsource>The miner is working... Check your statistics every day.</oldsource>
         <translation>Майнер запущен... Проверяйте вашу статистику на сайте каждый день.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="322"/>
+        <source>Hashrate for last 15 sec: </source>
+        <translation>Хешрейт за 15 сек: </translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="341"/>
+        <location filename="mainwindow.cpp" line="366"/>
+        <source>Hashrate: </source>
+        <translation>Хешрейт: </translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="342"/>
+        <location filename="mainwindow.cpp" line="367"/>
+        <source>Accepted shares: </source>
+        <translation>Принятые шары: </translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="343"/>
+        <location filename="mainwindow.cpp" line="368"/>
+        <source>Uptime: </source>
+        <translation>Время работы: </translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="343"/>
+        <location filename="mainwindow.cpp" line="368"/>
+        <source> min</source>
+        <translation> мин</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="350"/>
+        <source>F: </source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="351"/>
+        <source>P: </source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="352"/>
+        <source>T: </source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>SocketClient</name>
+    <message>
+        <location filename="socketclient.cpp" line="26"/>
+        <source>Connecting to the miner...</source>
+        <translation>Подключение к майнеру</translation>
+    </message>
+    <message>
+        <location filename="socketclient.cpp" line="51"/>
+        <source>Successfully connected to the miner.</source>
+        <translation>Успешное подключение к майнеру.</translation>
+    </message>
+    <message>
+        <location filename="socketclient.cpp" line="75"/>
+        <source>Error: </source>
+        <translation>Ошибка: </translation>
+    </message>
+    <message>
+        <location filename="socketclient.cpp" line="76"/>
+        <source>The host was not found.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="socketclient.cpp" line="78"/>
+        <source>The remote host is closed.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="socketclient.cpp" line="80"/>
+        <source>The connection was refused.</source>
+        <translation></translation>
     </message>
 </context>
 <context>

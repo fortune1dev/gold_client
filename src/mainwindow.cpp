@@ -2,23 +2,22 @@
 #include "ui_mainwindow.h"
 #include <QtDebug>
 #include <QCryptographicHash>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <string>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , m_gpu_miner_procces(new QProcess(this))
-    , m_cpu_miner_procces(new QProcess(this))
-    , m_timer(new QTimer())
 {
     ui->setupUi(this);
-
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(slotTimerMinerRestart()));
 
     ui->radioAMD->setStatusTip(tr("AMD Radeon series GPUs."));
     ui->radioNVIDIA->setStatusTip(tr("nVIDIA GeForce series GPUs."));
     ui->lineEditEmail->setStatusTip(tr("Your e-mail must be the same as the one you used to register on the site."));
     ui->lineEditEmail->setToolTip(tr("Your e-mail must be the same as the one you used to register on the site."));
-    ui->m_groupPerfomanceProfile->setStatusTip(tr("Please pay attention to selecting the performance profile! Your income depends on it! The more accurate you specify a performance profile, the better your mining result is."));
+
 
     ui->m_labelGPUMinerStatus->setStyleSheet("color: rgb(200, 0, 0)");
     ui->m_labelCPUMinerStatus->setStyleSheet("color: rgb(200, 0, 0)");
@@ -27,6 +26,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEditEmail->setText(m_settings->value("miner/email_address").toString());
     email = ui->lineEditEmail->text().trimmed();
 
+    connect(m_timer, &QTimer::timeout, this, &MainWindow::slotTimerMinerRestart);
+    connect(m_gpu_miners_stats_timer, &QTimer::timeout, this, &MainWindow::slotTimerGPUMinerStats);
+    connect(m_cpu_miners_stats_timer, &QTimer::timeout, this, &MainWindow::slotTimerCPUMinerStats);
+    connect(m_http_api_gpu_miner_manager, &QNetworkAccessManager::finished, this, &MainWindow::slot_HTTP_API_GPU_Respose);
     connect(ui->m_actionTwitter, SIGNAL(triggered()), this, SLOT(communityTwitterTriggered()));
     connect(ui->m_actionVK, SIGNAL(triggered()), this, SLOT(communityVKTriggered()));
     connect(ui->m_actionTelegram, SIGNAL(triggered()), this, SLOT(communityTelegramTriggered()));
@@ -38,24 +41,36 @@ MainWindow::MainWindow(QWidget *parent)
             int e = exitCode;
             QProcess::ExitStatus es = exitStatus;
             qDebug() << e << es;
-            ui->m_startGPUMiningButton->setChecked(false);
-            ui->m_startGPUMiningButton->setText(tr("Start mining"));
-            ui->m_labelGPUMinerStatus->setStyleSheet("color: rgb(200, 0, 0)");
-            ui->m_labelGPUMinerStatus->setText(tr("Miner stoped"));
+            onAfterStopMiner("gpu");
         });
     connect(m_cpu_miner_procces, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
         [=](int exitCode, QProcess::ExitStatus exitStatus){
             int e = exitCode;
             QProcess::ExitStatus es = exitStatus;
             qDebug() << e << es;
-            ui->m_startCPUMiningButton->setChecked(false);
-            ui->m_startCPUMiningButton->setText(tr("Start mining"));
-            ui->m_labelCPUMinerStatus->setStyleSheet("color: rgb(200, 0, 0)");
-            ui->m_labelCPUMinerStatus->setText(tr("Miner stoped"));
+            onAfterStopMiner("cpu");
         });
 
-    ui->m_frame_GPU_settings->setEnabled(false);
-    ui->m_frame_CPU_settings->setEnabled(false);
+    gpu = m_settings->value("miner/gpu_chip").toString();
+    if (gpu != ""){
+        ui->m_frame_GPU_settings->setEnabled(true);
+        ui->m_check_GPU_mining->setChecked(true);
+        if (gpu == "nvidia"){
+            ui->radioNVIDIA->setChecked(true);
+            ui->m_startGPUMiningButton->setEnabled(true);
+        } else{
+            ui->radioAMD->setChecked(true);
+            ui->m_startGPUMiningButton->setEnabled(true);
+        }
+    } else {
+        ui->m_frame_GPU_settings->setEnabled(false);
+    }
+
+    if (m_settings->value("miner/cpu_active").toBool() == false)
+        ui->m_frame_CPU_settings->setEnabled(false);
+    else {
+        ui->m_check_CPU_mining->setChecked(true);
+    }
     initCpuCoresCombo();
 }
 
@@ -65,67 +80,75 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::startGPUMining() {
-    bool gpu_miner_started = false;    
+    bool gpu_miner_started = false;
     email = ui->lineEditEmail->text().trimmed();
-    if(gpu == "" || email ==  "" || port == "" ||  m_gpu_miner_procces->state() == QProcess::Running)
+    if(gpu == "" || email ==  "" || m_gpu_miner_procces->state() == QProcess::Running)
         return;
 
     QByteArray ba = email.toUtf8();
     m_settings->setValue("miner/email_address", email);
-//    qDebug() << email;
-//    qDebug() <<  QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex();
-    {
-        QString params;
-        QString program = QCoreApplication::applicationDirPath() + "/dll/";
-        QStringList arguments = QStringList();
-        if (gpu == "amd_zano"){
-            program += "amdw";
-            address = QByteArray::fromBase64((addr_zano_part1+addr_zano_part2+"=").toUtf8());
+    m_settings->setValue("miner/gpu_chip", gpu);
 
-            QString tmpaddr = address;
-            arguments << "--algo" << "progpowz"
-                      << "-o" << "stratum+tcp://51.91.29.107:" + port
-                      << "-w" << QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex()
-                      << "-u" << tmpaddr.remove(0,15).remove(".");
-        } else if (gpu == "nvidia"){
-            program += "nvidia";
-            address = QByteArray::fromBase64((addr_zano_part1+addr_zano_part2+"=").toUtf8());
-            arguments << "--pool"
-                      << address + QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex() + "@51.91.29.107:" + port;
-        } else if (gpu == "amd_xmr") {
-            program += "xmr";
-            address = QByteArray::fromBase64((addr_xhv_part1+addr_xhv_part2+"=").toUtf8());
-            arguments << "--no-cpu" // << "--log-file="+QCoreApplication::applicationDirPath() + "/dll/log.log"
-                      << "--opencl"
-                      << "--url=" + QByteArray::fromBase64((QString("MzcuOS4zLjI2OjQ0Mw") + "==").toUtf8())
-                      << "--user=" + address
-                      << "--pass=" + QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex()
-                      << "--donate-level=1";
+    QString program = QCoreApplication::applicationDirPath() + "/miners/";
+    QStringList arguments = QStringList();
+    if (gpu == "nvidia" /*|| gpu == "amd_xmr"*/){
+        program += "t-rex/t-rex.exe";
+        address = QByteArray::fromBase64((addr_zano_part1+addr_zano_part2+"==").toUtf8());
+        arguments << "-a" << "progpowz"
+                  << "--coin" << "zano"
+                  << "-o" << QByteArray::fromBase64((QString("c3RyYXR1bSt0Y3A6Ly96YW5vLmx1Y2t5cG9vbC5pbzo4ODc3")).toUtf8())
+                  << "-w" << QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex()
+                  << "-u" << address
+                  << "--fan" << "t:67"
+                  << "--pl" << "85"
+                  << "--api-bind-http" << "127.0.0.1:54972"
+                  << "--api-read-only"
+                  << "-b" << "0";
+    } else if (gpu == "amd_xmr") {
+        /*program += "xmrig/xmrig.exe";
+        address = QByteArray::fromBase64((addr_xhv_part1+addr_xhv_part2+"=").toUtf8());
+        arguments << "--opencl"
+                  << "--url=" + QByteArray::fromBase64((QString("MzcuOS4zLjI2OjQ0Mw") + "==").toUtf8())
+                  << "--user=" + address
+                  << "--pass=" + QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex()
+                  << "--donate-level=1"
+                  << "--http-host=127.0.0.1"
+                  << "--http-port=54972";*/
 
-        }
+        program += "wildrig/wildrig.exe";
+        address = QByteArray::fromBase64((addr_zano_part1+addr_zano_part2+"==").toUtf8());
+        arguments << "-a" << "progpowz"
+                  << "-o" << QByteArray::fromBase64((QString("c3RyYXR1bSt0Y3A6Ly96YW5vLmx1Y2t5cG9vbC5pbzo4ODc3")).toUtf8())
+                  << "-w" << QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex()
+                  << "-u" << address
+                  << "--api-port" << "54972"
+                  << "--print-full"
+                  << "--print-power"
+                  << "--pass" << "xx";
+    }
 
-    //    qDebug() << program;
-    //    qDebug() << arguments;
-        if (debug_mode){
-            m_gpu_miner_procces->setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments *args){
-                args->flags |= CREATE_NEW_CONSOLE;
-                args->startupInfo->dwFlags &= ~STARTF_USESTDHANDLES;
-            });
-        }
+    qDebug() << program;
+    qDebug() << arguments;
 
-        m_gpu_miner_procces->start(program, arguments);
-        if (m_gpu_miner_procces->waitForStarted()){
-            gpu_miner_started = true;
-        }
+    if (debug_mode){
+        m_gpu_miner_procces->setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments *args){
+            args->flags |= CREATE_NEW_CONSOLE;
+            args->startupInfo->dwFlags &= ~STARTF_USESTDHANDLES;
+        });
+    }
 
+    if (gpu == "nvidia")
+        m_gpu_miner_procces->setWorkingDirectory(QCoreApplication::applicationDirPath() + "/miners/t-rex/");
+    if (gpu == "amd_xmr")
+        m_gpu_miner_procces->setWorkingDirectory(QCoreApplication::applicationDirPath() + "/miners/wildrig/");
+
+    m_gpu_miner_procces->start(program, arguments);
+    if (m_gpu_miner_procces->waitForStarted()){
+        gpu_miner_started = true;
     }
 
     if(gpu_miner_started){
-        ui->m_startGPUMiningButton->setChecked(true);
-        ui->m_startGPUMiningButton->setText(tr("Stop mining"));
-        ui->m_labelGPUMinerStatus->setStyleSheet("color: rgb(0, 200, 0)");
-        ui->m_labelGPUMinerStatus->setText(tr("The miner is working... Check your statistics on the website every day."));
-        m_timer->start(60000);
+       onAfterStartMiner("gpu");
     }
 }
 
@@ -136,11 +159,7 @@ void MainWindow::stopGPUMining() {
         return;
     }
 
-    ui->m_startGPUMiningButton->setChecked(false);
-    ui->m_startGPUMiningButton->setText(tr("Start mining"));
-    ui->m_labelGPUMinerStatus->setStyleSheet("color: rgb(200, 0, 0)");
-    ui->m_labelGPUMinerStatus->setText(tr("Miner stoped"));
-    m_timer->stop();
+    onAfterStopMiner("gpu");
 
 }
 
@@ -152,27 +171,23 @@ void MainWindow::startCPUMining() {
 
     QByteArray ba = email.toUtf8();
     m_settings->setValue("miner/email_address", email);
-//    qDebug() << email;
-//    qDebug() <<  QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex();
+    m_settings->setValue("miner/cpu_active", m_CPU_Mining_Avalible);
 
-    QString params;
-    QString program = QCoreApplication::applicationDirPath() + "/dll/";
+    QString program = QCoreApplication::applicationDirPath() + "/miners/nheqminer/nheqminer.exe";
     QStringList arguments = QStringList();
 
-    program += "nhcpu";
     address = QByteArray::fromBase64((addr_vrsc_part1+addr_vrsc_part2+"==").toUtf8());
 
-    QString tmpaddr = address;
     arguments << "-v"
               << "-l" << QByteArray::fromBase64((QString("NzkuMTM3LjcwLjQ4OjM5NTY") + "=").toUtf8())
               << "-u" << address + "." + QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex()
               << "-p" << "x"
-              << "-t" << QString::number(m_cpuCoresCount).toUtf8();
+              << "-t" << QString::number(m_cpuCoresCount).toUtf8()
+              << "-a" << "54973";
 
+    //qDebug() << program;
+    //qDebug() << arguments;
 
-
-    qDebug() << program;
-    qDebug() << arguments;
     if (debug_mode){
         m_cpu_miner_procces->setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments *args){
             args->flags |= CREATE_NEW_CONSOLE;
@@ -186,11 +201,7 @@ void MainWindow::startCPUMining() {
     }
 
     if(cpu_miner_started){
-        ui->m_startCPUMiningButton->setChecked(true);
-        ui->m_startCPUMiningButton->setText(tr("Stop mining"));
-        ui->m_labelCPUMinerStatus->setStyleSheet("color: rgb(0, 200, 0)");
-        ui->m_labelCPUMinerStatus->setText(tr("The miner is working... Check your statistics on the website every day."));
-        m_timer->start(60000);
+        onAfterStartMiner("cpu");
     }
 }
 
@@ -201,12 +212,7 @@ void MainWindow::stopCPUMining() {
         return;
     }
 
-    ui->m_startCPUMiningButton->setChecked(false);
-    ui->m_startCPUMiningButton->setText(tr("Start mining"));
-    ui->m_labelCPUMinerStatus->setStyleSheet("color: rgb(200, 0, 0)");
-    ui->m_labelCPUMinerStatus->setText(tr("Miner stoped"));
-    m_timer->stop();
-
+    onAfterStopMiner("cpu");
 }
 
 void MainWindow::initCpuCoresCombo()
@@ -223,6 +229,55 @@ void MainWindow::initCpuCoresCombo()
     ui->m_CPUCoresCombo->setCurrentIndex(m_cpuCoresCount - 1);
 }
 
+void MainWindow::onAfterStartMiner(const QString type)
+{
+    if(type == "cpu") {
+        ui->m_startCPUMiningButton->setChecked(true);
+        ui->m_startCPUMiningButton->setText(tr("Stop mining"));
+        ui->m_labelCPUMinerStatus->setStyleSheet("color: rgb(0, 200, 0)");
+        ui->m_labelCPUMinerStatus->setText(tr("The miner is working... Check your statistics on the website every day."));
+        ui->m_check_CPU_mining->setEnabled(false);
+        m_cpu_miners_stats_timer->start(10000);
+        m_CPUSocket->Connect("127.0.0.1", 54973, ui->m_labelCPUMinerStatistics);
+    } else {
+        ui->m_startGPUMiningButton->setChecked(true);
+        ui->m_startGPUMiningButton->setText(tr("Stop mining"));
+        ui->m_labelGPUMinerStatus->setStyleSheet("color: rgb(0, 200, 0)");
+        ui->m_labelGPUMinerStatus->setText(tr("The miner is working... Check your statistics on the website every day."));
+        ui->m_check_GPU_mining->setEnabled(false);
+        ui->radioNVIDIA->setEnabled(false);
+        ui->radioAMD->setEnabled(false);
+        m_timer->start(60000);
+        m_gpu_miners_stats_timer->start(5000);
+//        if (gpu == "nvidia"){
+//            m_GPUSocket->Connect("127.0.0.1", 54972, ui->m_labelGPUMinerStatistics);
+//        }
+    }
+}
+
+void MainWindow::onAfterStopMiner(const QString type)
+{
+    if(type == "cpu") {
+        ui->m_startCPUMiningButton->setChecked(false);
+        ui->m_startCPUMiningButton->setText(tr("Start mining"));
+        ui->m_labelCPUMinerStatus->setStyleSheet("color: rgb(200, 0, 0)");
+        ui->m_labelCPUMinerStatus->setText(tr("Miner stoped"));
+        ui->m_check_CPU_mining->setEnabled(true);
+        m_cpu_miners_stats_timer->stop();
+        m_CPUSocket->Disconnect();
+    } else {
+        ui->m_startGPUMiningButton->setChecked(false);
+        ui->m_startGPUMiningButton->setText(tr("Start mining"));
+        ui->m_labelGPUMinerStatus->setStyleSheet("color: rgb(200, 0, 0)");
+        ui->m_labelGPUMinerStatus->setText(tr("Miner stoped"));
+        ui->m_check_GPU_mining->setEnabled(true);
+        ui->radioNVIDIA->setEnabled(true);
+        ui->radioAMD->setEnabled(true);
+        m_timer->stop();
+        m_gpu_miners_stats_timer->stop();
+    }
+}
+
 void MainWindow::on_m_startGPUMiningButton_clicked(bool _on)
 {
     if (_on) {
@@ -231,6 +286,7 @@ void MainWindow::on_m_startGPUMiningButton_clicked(bool _on)
       stopGPUMining();
     }
 }
+
 
 void MainWindow::on_m_startCPUMiningButton_clicked(bool _on)
 {
@@ -245,40 +301,95 @@ void MainWindow::slotTimerMinerRestart(){
     startGPUMining();
 }
 
+void MainWindow::slotTimerGPUMinerStats()
+{
+    m_http_api_gpu_miner_manager->get(QNetworkRequest(QUrl("http://127.0.0.1:54972/summary")));
+}
+
+void MainWindow::slotTimerCPUMinerStats()
+{
+    m_CPUSocket->SendData("status\r\n");
+
+    auto answer = m_CPUSocket->GetData();
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(answer);
+    QJsonObject jsonObj = jsonDoc.object();
+    double curHR = 0;
+
+    auto jsonArr = jsonObj["result"].toObject();
+    curHR = jsonArr["speed_ips"].toDouble() * 1000;
+
+    QString text = tr("Hashrate for last 15 sec: ") + QString::number(curHR) + " KH/s <br />";
+    ui->m_labelCPUMinerStatistics->setText(text);
+    //qDebug() << answer;
+
+}
+
+void MainWindow::slot_HTTP_API_GPU_Respose(QNetworkReply *reply)
+{
+    if(reply->error() == QNetworkReply::NoError) {
+        if (gpu == "nvidia"){
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
+            QJsonObject jsonObj = jsonDoc.object();
+            //qDebug() <<jsonObj;
+
+            auto curHR = jsonObj.value("hashrate").toDouble()/1000000;
+            auto uptime = jsonObj.value("uptime").toInt() / 60;
+            auto accepted = jsonObj.value("accepted_count").toInt();
+            auto GPUS = jsonObj.value("gpus").toArray();
+
+            QString text = tr("Hashrate: ") + QString::number(curHR, 'f', 3) + "MH/s, ";
+            text += tr("Accepted shares: ") + QString::number(accepted) + ", ";
+            text += tr("Uptime: ") + QString::number(uptime) + tr(" min") + "<br />";
+
+            int i=1;
+            for (auto item : GPUS) {
+                 //qDebug() << item.toObject();
+                 text += "#" + QString::number(i) + ": " + item.toObject().value("vendor").toString() + " ";
+                 text += item.toObject().value("name").toString() + " [";
+                 text += tr("F: ") + QString::number(item.toObject().value("fan_speed").toInt()) + "%, ";
+                 text += tr("P: ") + QString::number(item.toObject().value("power").toInt()) + "W, ";
+                 text += tr("T: ") + QString::number(item.toObject().value("temperature").toInt()) + "C]";
+                 i++;
+            }
+
+            ui->m_labelGPUMinerStatistics->setText(text);
+        } else if (gpu == "amd_xmr"){
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
+            QJsonObject jsonObj = jsonDoc.object();
+
+            auto curHR = jsonObj.value("hashrate")["total"][0].toDouble()/1000000;
+            auto uptime = jsonObj.value("uptime").toInt() / 60;
+            auto accepted = jsonObj.value("results")["shares_good"].toInt();
+            auto GPUS = jsonObj.value("gpus").toArray();
+
+            QString text = tr("Hashrate: ") + QString::number(curHR, 'f', 3) + "MH/s, ";
+            text += tr("Accepted shares: ") + QString::number(accepted) + ", ";
+            text += tr("Uptime: ") + QString::number(uptime) + tr(" min") + "<br />";
+
+            ui->m_labelGPUMinerStatistics->setText(text);
+        }
+    } else {
+        qDebug() << "Error API request: " << reply->error();
+    }
+}
+
 void MainWindow::on_radioAMD_clicked()
 {
     gpu = "amd_xmr";
-    if(port != "" && email != "")
+    m_settings->setValue("miner/gpu_chip", gpu);
+    if(email != "")
         ui->m_startGPUMiningButton->setEnabled(true);
 }
 
 void MainWindow::on_radioNVIDIA_clicked()
 {
     gpu = "nvidia";
-    if(port != "" && email != "")
+    m_settings->setValue("miner/gpu_chip", gpu);
+    if(email != "")
         ui->m_startGPUMiningButton->setEnabled(true);
 }
 
-void MainWindow::on_m_radioLowProfile_clicked()
-{
-    port = "8866";
-    if(gpu != "" && email != "")
-        ui->m_startGPUMiningButton->setEnabled(true);
-}
-
-void MainWindow::on_m_radioMidleProfile_clicked()
-{
-    port = "8877";
-    if(gpu != "" && email != "")
-        ui->m_startGPUMiningButton->setEnabled(true);
-}
-
-void MainWindow::on_m_radioHighProfile_clicked()
-{
-    port = "8888";
-    if(gpu != "" && email != "")
-        ui->m_startGPUMiningButton->setEnabled(true);
-}
 
 void MainWindow::on_lineEditEmail_textChanged(const QString &arg1)
 {
@@ -292,7 +403,7 @@ void MainWindow::on_lineEditEmail_textChanged(const QString &arg1)
 
     email = arg1.toLower();
     ui->lineEditEmail->setText(email);
-    if(!gpu.isEmpty() && !port.isEmpty()){
+    if(!gpu.isEmpty()){
         ui->m_startGPUMiningButton->setEnabled(true);
     }
 }
@@ -306,9 +417,11 @@ void MainWindow::on_m_check_GPU_mining_stateChanged(int state)
 {
     if (state == 0){
         ui->m_frame_GPU_settings->setEnabled(false);
-        m_GPU_Mining_Avalible = false;        
+        m_settings->setValue("miner/gpu_chip", "");
+        m_GPU_Mining_Avalible = false;
     } else {
         ui->m_frame_GPU_settings->setEnabled(true);
+        m_settings->setValue("miner/gpu_chip", gpu);
         m_GPU_Mining_Avalible = true;
     }
 }
@@ -318,10 +431,12 @@ void MainWindow::on_m_check_CPU_mining_stateChanged(int state)
     if (state == 0){
         ui->m_frame_CPU_settings->setEnabled(false);
         m_CPU_Mining_Avalible = false;
+        m_settings->setValue("miner/cpu_active", m_CPU_Mining_Avalible);
     } else {
         ui->m_frame_CPU_settings->setEnabled(true);
         on_lineEditEmail_editingFinished();
         m_CPU_Mining_Avalible = true;
+        m_settings->setValue("miner/cpu_active", m_CPU_Mining_Avalible);
     }
 
 }
